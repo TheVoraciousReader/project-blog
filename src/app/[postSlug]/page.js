@@ -6,6 +6,8 @@ import styles from "./postSlug.module.css";
 import { loadBlogPost } from "@/helpers/file-helpers";
 import { BLOG_TITLE } from "@/constants";
 import CodeSnippet from "@/components/CodeSnippet";
+import DivisionGroupsDemo from "@/components/DivisionGroupsDemo";
+import CircularColorsDemo from "@/components/CircularColorsDemo";
 
 export async function generateMetadata({ params }) {
   const { postSlug } = await params;
@@ -28,7 +30,14 @@ async function BlogPost({ params }) {
         />
       )}
       <div className={styles.page}>
-        <MDXRemote source={content} components={{ pre: CodeSnippet }} />
+        <MDXRemote
+          source={content}
+          components={{
+            pre: CodeSnippet,
+            DivisionGroupsDemo: DivisionGroupsDemo,
+            CircularColorsDemo: CircularColorsDemo,
+          }}
+        />
       </div>
     </article>
   );
