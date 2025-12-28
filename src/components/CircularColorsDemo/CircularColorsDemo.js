@@ -24,11 +24,8 @@ const COLORS = [
 function CircularColorsDemo() {
   const id = React.useId();
   const [isTimerRunning, setIsTimerRunning] = React.useState(false);
-  // TODO: This value should increase by 1 every second:
   const [timeElapsed, setTimeElapsed] = React.useState(0);
 
-  // TODO: This value should cycle through the colors in the
-  // COLORS array:
   const colorsIndex = timeElapsed % COLORS.length;
   const selectedColor = COLORS[colorsIndex];
 

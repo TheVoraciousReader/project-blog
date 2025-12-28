@@ -2,11 +2,12 @@ import React from "react";
 import { Work_Sans, Spline_Sans_Mono } from "next/font/google";
 import clsx from "clsx";
 
-import { LIGHT_TOKENS, DARK_TOKENS } from "@/constants";
+import { LIGHT_TOKENS, DARK_TOKENS, THEME_COOKIE_TOKEN } from "@/constants";
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import "./styles.css";
+import { cookies } from "next/headers";
 import MotionPreference from "@/components/MotionPreference";
 
 const mainFont = Work_Sans({
@@ -22,9 +23,9 @@ const monoFont = Spline_Sans_Mono({
   variable: "--font-family-mono",
 });
 
-function RootLayout({ children }) {
-  // TODO: Dynamic theme depending on user preference
-  const theme = "light";
+async function RootLayout({ children }) {
+  const persistedTheme = (await cookies()).get(THEME_COOKIE_TOKEN).value || "";
+  const theme = persistedTheme || "light";
 
   return (
     <html
@@ -35,7 +36,7 @@ function RootLayout({ children }) {
     >
       <body>
         <MotionPreference>
-          <Header theme={theme} />
+          <Header initialTheme={theme} />
           <main>{children}</main>
           <Footer />
         </MotionPreference>
