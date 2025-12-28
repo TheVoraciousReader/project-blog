@@ -2,6 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 import matter from "gray-matter";
 import React from "react";
+import { notFound } from "next/navigation";
 export async function getBlogPostList() {
   const fileNames = await readDirectory("/content");
 
@@ -22,7 +23,18 @@ export async function getBlogPostList() {
 }
 
 export const loadBlogPost = React.cache(async (slug) => {
-  const rawContent = await readFile(`/content/${slug}.mdx`);
+  let rawContent;
+  try {
+    rawContent = await readFile(`/content/${slug}.mdx`);
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      console.log(`${slug} does not exist.`);
+      notFound();
+    } else {
+      console.error(`Error checking file: ${error.message}`);
+    }
+    return false;
+  }
 
   const { data: frontmatter, content } = matter(rawContent);
 
